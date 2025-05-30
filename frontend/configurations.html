@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EigenGuard - Configuration</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg-primary: #f4f6f9;
+            --card-bg: white;
+            --text-primary: #2c3e50;
+            --accent-blue: #3498db;
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-orange: #f39c12;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            height: 100vh;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .sidebar-logo img {
+            width: 50px;
+            margin-right: 15px;
+        }
+
+        .sidebar-logo h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu a:hover {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .sidebar-menu a.active {
+            opacity: 1;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 15px;
+        }
+
+        .configuration-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .config-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .config-card:hover {
+            transform: scale(1.02);
+        }
+
+        .config-card h2 {
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            color: var(--accent-blue);
+        }
+
+        .config-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+
+        .form-control {
+            display: flex;
+            align-items: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--accent-green);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .config-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="log2.png" style="width: 100%; height: auto;" alt="EigenGuard Logo">
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="network-traffic.html">Network Traffic</a></li>
+                <li><a href="threatdetection.html">Threat Detection</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="configurations.html" class="active">Configuration</a></li>
+                <li><a href="monitoring-dashboard.html">monitoring dashboard</a></li>
+
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <header class="header">
+                <h1>System Configuration</h1>
+                <div>Last Updated: <span id="last-update">March 28, 2025 14:35:22</span></div>
+            </header>
+            
+            <section class="configuration-sections">
+                <div class="config-card">
+                    <h2>Security Settings</h2>
+                    <form class="config-form">
+                        <div class="form-group">
+                            <label>AI Threat Detection</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Automated Blocking</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Advanced Firewall</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="config-card">
+                    <h2>Network Configuration</h2>
+                    <form class="config-form">
+                        <div class="form-group">
+                            <label>IP Whitelisting</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>VPN Integration</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Multi-Factor Authentication</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <section class="configuration-sections">
+                <div class="config-card">
+                    <h2>Notification Preferences</h2>
+                    <form class="config-form">
+                        <div class="form-group">
+                            <label>Email Alerts</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>SMS Notifications</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Slack Integration</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="config-card">
+                    <h2>Performance Settings</h2>
+                    <form class="config-form">
+                        <div class="form-group">
+                            <label>AI Model Optimization</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Resource Monitoring</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Background Analytics</label>
+                            <div class="form-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <div class="config-actions">
+                <button class="btn btn-primary">Save Configurations</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function updateLastUpdateTime() {
+            const lastUpdateEl = document.getElementById('last-update');
+            const now = new Date();
+            lastUpdateEl.textContent = now.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        }
+
+        // Update time every minute
+        setInterval(updateLastUpdateTime, 60000);
+        updateLastUpdateTime();
+    </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EigenGuard - Network Traffic</title>
+    <link rel="stylesheet" href="network-traffic.css">
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="log2.png" style="width: 100%; height: auto;" alt="EigenGuard Logo">
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="network-traffic.html" class="active">Network Traffic</a></li>
+                <li><a href="threatdetection.html">Threat Detection</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="configurations.html">Configuration</a></li>
+                <li><a href="monitoring-dashboard.html">monitoring dashboard</a></li>
+
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <header class="header">
+                <h1>Network Traffic Overview</h1>
+                <div>Last Updated: <span id="last-update">March 28, 2025 14:35:22</span></div>
+            </header>
+            
+            <section class="network-traffic-section">
+                <div class="traffic-summary">
+                    <div class="stat-card">
+                        <div class="value">12.5 TB</div>
+                        <div class="label">Total Data Transferred</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">345</div>
+                        <div class="label">Active Connections</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="value">98.3%</div>
+                        <div class="label">Bandwidth Utilization</div>
+                    </div>
+                </div>
+
+                <div class="traffic-details">
+                    <div class="traffic-table">
+                        <h2>Current Network Connections</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Source IP</th>
+                                    <th>Destination</th>
+                                    <th>Protocol</th>
+                                    <th>Data Volume</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>192.168.1.105</td>
+                                    <td>aws.amazon.com</td>
+                                    <td>HTTPS</td>
+                                    <td>245 MB</td>
+                                    <td><span class="connection-status active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>10.0.0.42</td>
+                                    <td>internal-db.company.local</td>
+                                    <td>MySQL</td>
+                                    <td>78 MB</td>
+                                    <td><span class="connection-status active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>172.16.0.88</td>
+                                    <td>backup-server.company.local</td>
+                                    <td>SMB</td>
+                                    <td>512 MB</td>
+                                    <td><span class="connection-status idle">Idle</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="traffic-chart">
+                        <h2>Bandwidth Usage</h2>
+                        <div id="bandwidth-chart" style="height: 300px; display: flex; justify-content: center; align-items: center;">
+                            Bandwidth Chart Placeholder
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function updateLastUpdateTime() {
+            const lastUpdateEl = document.getElementById('last-update');
+            const now = new Date();
+            lastUpdateEl.textContent = now.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        }
+
+        // Update time every minute
+        setInterval(updateLastUpdateTime, 60000);
+        updateLastUpdateTime();
+    </script>
+</body>
+</html>

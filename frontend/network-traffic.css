@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+    --bg-primary: #f4f6f9;
+    --card-bg: white;
+    --text-primary: #2c3e50;
+    --accent-blue: #3498db;
+    --accent-green: #2ecc71;
+    --accent-red: #e74c3c;
+    --accent-orange: #f39c12;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    height: 100vh;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+.sidebar {
+    background-color: var(--accent-blue);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.sidebar-logo img {
+    width: 50px;
+    margin-right: 15px;
+}
+
+.sidebar-logo h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.sidebar-menu {
+    list-style: none;
+}
+
+.sidebar-menu li {
+    margin-bottom: 20px;
+}
+
+.sidebar-menu a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu a:hover, .sidebar-menu a.active {
+    opacity: 1;
+    transform: translateX(5px);
+}
+
+.main-content {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding: 20px;
+    overflow: auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 15px;
+}
+
+.stat-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: scale(1.03);
+}
+
+.stat-card .value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.stat-card .label {
+    color: #7f8c8d;
+    margin-top: 10px;
+}
+
+.network-traffic-section, .threat-section {
+    display: grid;
+    gap: 20px;
+}
+
+.traffic-summary, .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.traffic-details, .threat-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.traffic-table, .threat-table, .traffic-chart, .threat-chart {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px var(--shadow);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    color: #7f8c8d;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ecf0f1;
+}
+
+td {
+    padding: 12px 0;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.connection-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.connection-status.active {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: var(--accent-green);
+}
+
+.connection-status.idle {
+    background-color: rgba(241, 196, 15, 0.2);
+    color: var(--accent-orange);
+}
+
+.threat-level {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.threat-level-low { 
+    background-color: rgba(46, 204, 113, 0.2);
+    color: var(--accent-green);
+}
+
+.threat-level-medium { 
+    background-color: rgba(241, 196, 15, 0.2);
+    color: var(--accent-orange);
+}
+
+.threat-level-high { 
+    background-color: rgba(231, 76, 60, 0.2);
+    color: var(--accent-red);
+}

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EigenGuard - AI-Powered Intrusion Detection</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg-primary: #f4f6f9;
+            --card-bg: white;
+            --text-primary: #2c3e50;
+            --accent-blue: #3498db;
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-orange: #f39c12;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            height: 100vh;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .sidebar-logo img {
+            width: 50px;
+            margin-right: 15px;
+        }
+
+        .sidebar-logo h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu a:hover {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.03);
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-card .label {
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+
+        .threat-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .threat-table, .threat-chart {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            color: #7f8c8d;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        td {
+            padding: 12px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .threat-level {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .threat-level-low { 
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--accent-green);
+        }
+
+        .threat-level-medium { 
+            background-color: rgba(241, 196, 15, 0.2);
+            color: var(--accent-orange);
+        }
+
+        .threat-level-high { 
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--accent-red);
+        }
+        .ai-insights {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px var(--shadow);
+            margin-top: 20px;
+        }
+
+        .ai-prediction-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .ai-prediction-card {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .ai-prediction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .ai-prediction-card .ai-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+            background-color: var(--accent-blue);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .ai-confidence-meter {
+            width: 100%;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .ai-confidence-level {
+            height: 100%;
+            background-color: var(--accent-green);
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="log2.png" style="width: 100%; height: auto;" alt="EigenGuard Logo">
+               
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="network-traffic.html">Network Traffic</a></li>
+                <li><a href="threatdetection.html">Threat Detection</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="configurations.html">Configuration</a></li>
+                <li><a href="monitoring-dashboard.html">monitoring dashboard</a></li>
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <header class="header">
+                <h1>AI-Powered Intrusion Detection</h1>
+                <div>Last Updated: <span id="last-update">March 28, 2025 14:35:22</span></div>
+            </header>
+            
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="value">42</div>
+                    <div class="label">Total Anomalies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">3</div>
+                    <div class="label">Critical Threats</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">99.7%</div>
+                    <div class="label">Network Security Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">247</div>
+                    <div class="label">Events Processed</div>
+                </div>
+            </section>
+            <section class="ai-insights">
+                <h2>AI Threat Intelligence</h2>
+                <div class="ai-prediction-grid">
+                    <div class="ai-prediction-card">
+                        <div class="ai-icon">🤖</div>
+                        <h3>Predictive Threat Analysis</h3>
+                        <p>Proactive risk identification</p>
+                        <div class="ai-confidence-meter">
+                            <div class="ai-confidence-level" style="width: 85%"></div>
+                        </div>
+                        <small>85% Confidence</small>
+                    </div>
+                    <div class="ai-prediction-card">
+                        <div class="ai-icon">🔮</div>
+                        <h3>Anomaly Detection</h3>
+                        <p>Machine learning pattern recognition</p>
+                        <div class="ai-confidence-meter">
+                            <div class="ai-confidence-level" style="width: 92%"></div>
+                        </div>
+                        <small>92% Accuracy</small>
+                    </div>
+                    <div class="ai-prediction-card">
+                        <div class="ai-icon">🛡️</div>
+                        <h3>Adaptive Defense</h3>
+                        <p>Real-time threat mitigation</p>
+                        <div class="ai-confidence-meter">
+                            <div class="ai-confidence-level" style="width: 78%"></div>
+                        </div>
+                        <small>78% Adaptive Response</small>
+                    </div>
+                </div>
+            </section>
+            <section class="threat-section">
+                <div class="threat-table">
+                    <h2>Recent Threats</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Source IP</th>
+                                <th>Threat Level</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2025-03-28 14:23</td>
+                                <td>192.168.1.105</td>
+                                <td><span class="threat-level threat-level-high">High</span></td>
+                                <td>Unusual SSH Access Pattern</td>
+                            </tr>
+                            <tr>
+                                <td>2025-03-28 13:55</td>
+                                <td>10.0.0.42</td>
+                                <td><span class="threat-level threat-level-medium">Medium</span></td>
+                                <td>Multiple Login Attempts</td>
+                            </tr>
+                            <tr>
+                                <td>2025-03-28 12:40</td>
+                                <td>172.16.0.88</td>
+                                <td><span class="threat-level threat-level-low">Low</span></td>
+                                <td>Potential Port Scan</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="threat-chart">
+                    <h2>Threat Analytics</h2>
+                    <div id="threat-chart" style="height: 300px; display: flex; justify-content: center; align-items: center;">
+                        Threat Chart Placeholder
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function updateLastUpdateTime() {
+            const lastUpdateEl = document.getElementById('last-update');
+            const now = new Date();
+            lastUpdateEl.textContent = now.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        }
+
+        // Update time every minute
+        setInterval(updateLastUpdateTime, 60000);
+        updateLastUpdateTime();
+    </script>
+</body>
+</html>

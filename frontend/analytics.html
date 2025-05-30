@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EigenGuard - Analytics</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg-primary: #f4f6f9;
+            --card-bg: white;
+            --text-primary: #2c3e50;
+            --accent-blue: #3498db;
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-orange: #f39c12;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            height: 100vh;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .sidebar-logo img {
+            width: 50px;
+            margin-right: 15px;
+        }
+
+        .sidebar-logo h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu a:hover {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .sidebar-menu a.active {
+            opacity: 1;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 15px;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.03);
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-card .label {
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+
+        .analytics-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .analytics-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .trend-positive {
+            color: var(--accent-green);
+        }
+
+        .trend-negative {
+            color: var(--accent-red);
+        }
+
+        .chart-placeholder {
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f1f3f5;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <img src="log2.png" style="width: 100%; height: auto;" alt="EigenGuard Logo">
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="network-traffic.html">Network Traffic</a></li>
+                <li><a href="threatdetection.html">Threat Detection</a></li>
+                <li><a href="analytics.html" class="active">Analytics</a></li>
+                <li><a href="configurations.html">Configuration</a></li>
+                <li><a href="monitoring-dashboard.html">monitoring dashboard</a></li>
+
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <header class="header">
+                <h1>Security Analytics</h1>
+                <div>Last Updated: <span id="last-update">March 28, 2025 14:35:22</span></div>
+            </header>
+            
+            <section class="analytics-grid">
+                <div class="analytics-section">
+                    <div class="stat-card">
+                        <div>
+                            <div class="value">73</div>
+                            <div class="label">AI-Detected Anomalies</div>
+                        </div>
+                        <div class="trend-indicator trend-positive">↑ 12.5% from last month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div>
+                            <div class="value">4.2</div>
+                            <div class="label">Average Threat Score</div>
+                        </div>
+                        <div class="trend-indicator trend-negative">↓ 2.3% from last month</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div>
+                        <div class="value">99.8%</div>
+                        <div class="label">Predictive Defense Accuracy</div>
+                    </div>
+                    <div class="trend-indicator trend-positive">↑ 0.5% from last quarter</div>
+                </div>
+            </section>
+
+            <section class="analytics-section">
+                <div class="analytics-card">
+                    <h2>Threat Detection Trends</h2>
+                    <div class="chart-placeholder">
+                        Threat Detection Chart Placeholder
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <h2>Anomaly Distribution</h2>
+                    <div class="chart-placeholder">
+                        Anomaly Distribution Chart Placeholder
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function updateLastUpdateTime() {
+            const lastUpdateEl = document.getElementById('last-update');
+            const now = new Date();
+            lastUpdateEl.textContent = now.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        }
+
+        // Update time every minute
+        setInterval(updateLastUpdateTime, 60000);
+        updateLastUpdateTime();
+    </script>
+</body>
+</html>

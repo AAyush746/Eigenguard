@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Monitoring Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #requestsTableContainer {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f8f8f8;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .response-preview {
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        
+        .status-code {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 12px;
+            color: white;
+        }
+        
+        .status-2xx {
+            background-color: #2ecc71;
+        }
+        
+        .status-3xx {
+            background-color: #3498db;
+        }
+        
+        .status-4xx {
+            background-color: #e74c3c;
+        }
+        
+        .status-5xx {
+            background-color: #e74c3c;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #3498db;
+            color: #3498db;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .header-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .add-header-btn {
+            background-color: #2ecc71;
+            margin-left: 10px;
+        }
+        
+        .remove-header-btn {
+            background-color: #e74c3c;
+            margin-left: 10px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 8px;
+            width: 70%;
+            max-width: 800px;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        
+        .badge-get {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .badge-post {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .badge-put {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .badge-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .badge-patch {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .stats-card {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .stat-box {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            flex: 1;
+            margin: 0 10px;
+            text-align: center;
+        }
+        
+        .stat-box h3 {
+            margin: 0;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .stat-box p {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 10px 0 0;
+        }
+        
+        .chart-container {
+            height: 250px;
+            margin-top: 20px;
+        }
+        
+        #exportButtons {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>HTTP Monitoring Dashboard</h1>
+            <div>
+                <button id="clearAllBtn">Clear All Data</button>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="request">Request Builder</div>
+            <div class="tab" data-tab="history">Request History</div>
+            <div class="tab" data-tab="analytics">Analytics</div>
+            <div class="tab" data-tab="export">Export Data</div>
+        </div>
+        
+        <div id="requestTab" class="tab-content active">
+            <div class="card">
+                <form id="requestForm">
+                    <div class="form-group">
+                        <label for="requestName">Request Name</label>
+                        <input type="text" id="requestName" placeholder="My API Request">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="method">Method</label>
+                        <select id="method">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                            <option value="PATCH">PATCH</option>
+                            <option value="HEAD">HEAD</option>
+                            <option value="OPTIONS">OPTIONS</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="url">URL</label>
+                        <input type="text" id="url" placeholder="https://api.example.com/endpoint">
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-subtab="headers">Headers</div>
+                        <div class="tab" data-subtab="params">Query Params</div>
+                        <div class="tab" data-subtab="body">Body</div>
+                        <div class="tab" data-subtab="auth">Auth</div>
+                    </div>
+                    
+                    <div id="headersTab" class="tab-content active">
+                        <div id="headersContainer">
+                            <div class="header-row">
+                                <input type="text" class="header-key" placeholder="Header Name">
+                                <input type="text" class="header-value" placeholder="Header Value">
+                                <button type="button" class="remove-header-btn">-</button>
+                            </div>
+                        </div>
+                        <button type="button" id="addHeaderBtn" class="add-header-btn">Add Header</button>
+                    </div>
+                    
+                    <div id="paramsTab" class="tab-content">
+                        <div id="paramsContainer">
+                            <div class="header-row">
+                                <input type="text" class="param-key" placeholder="Parameter Name">
+                                <input type="text" class="param-value" placeholder="Parameter Value">
+                                <button type="button" class="remove-param-btn">-</button>
+                            </div>
+                        </div>
+                        <button type="button" id="addParamBtn" class="add-header-btn">Add Parameter</button>
+                    </div>
+                    
+                    <div id="bodyTab" class="tab-content">
+                        <div class="form-group">
+                            <label for="bodyType">Body Type</label>
+                            <select id="bodyType">
+                                <option value="none">None</option>
+                                <option value="json">JSON</option>
+                                <option value="form">Form Data</option>
+                                <option value="text">Raw Text</option>
+                            </select>
+                        </div>
+                        
+                        <div id="jsonBodyContainer" style="display: none;">
+                            <div class="form-group">
+                                <label for="jsonBody">JSON Body</label>
+                                <textarea id="jsonBody" rows="8" placeholder='{"key": "value"}'></textarea>
+                            </div>
+                        </div>
+                        
+                        <div id="formBodyContainer" style="display: none;">
+                            <div id="formDataContainer">
+                                <div class="header-row">
+                                    <input type="text" class="form-key" placeholder="Field Name">
+                                    <input type="text" class="form-value" placeholder="Field Value">
+                                    <button type="button" class="remove-form-btn">-</button>
+                                </div>
+                            </div>
+                            <button type="button" id="addFormFieldBtn" class="add-header-btn">Add Field</button>
+                        </div>
+                        
+                        <div id="textBodyContainer" style="display: none;">
+                            <div class="form-group">
+                                <label for="textBody">Raw Text</label>
+                                <textarea id="textBody" rows="8" placeholder="Raw text content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="authTab" class="tab-content">
+                        <div class="form-group">
+                            <label for="authType">Authentication Type</label>
+                            <select id="authType">
+                                <option value="none">None</option>
+                                <option value="basic">Basic Auth</option>
+                                <option value="bearer">Bearer Token</option>
+                            </select>
+                        </div>
+                        
+                        <div id="basicAuthContainer" style="display: none;">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" placeholder="Password">
+                            </div>
+                        </div>
+                        
+                        <div id="bearerAuthContainer" style="display: none;">
+                            <div class="form-group">
+                                <label for="token">Token</label>
+                                <input type="text" id="token" placeholder="Bearer token">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" id="sendRequestBtn">Send Request</button>
+                        <button type="button" id="saveRequestBtn">Save Request</button>
+                        <button type="button" id="clearRequestBtn">Clear Form</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div> Sending request...
+            </div>
+            
+            <div class="card" id="responseCard" style="display: none;">
+                <h2>Response</h2>
+                <div class="form-group">
+                    <label>Status: <span id="statusCode"></span></label>
+                    <label>Time: <span id="responseTime"></span>ms</label>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-restab="body">Body</div>
+                    <div class="tab" data-restab="headers">Headers</div>
+                </div>
+                
+                <div id="responseBodyTab" class="tab-content active">
+                    <div class="response-preview" id="responseBody"></div>
+                </div>
+                
+                <div id="responseHeadersTab" class="tab-content">
+                    <div class="response-preview" id="responseHeaders"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="historyTab" class="tab-content">
+            <div class="card">
+                <h2>Request History</h2>
+                <div id="requestsTableContainer">
+                    <table id="requestsTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Method</th>
+                                <th>URL</th>
+                                <th>Status</th>
+                                <th>Time (ms)</th>
+                                <th>Timestamp</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requestsTableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div id="analyticsTab" class="tab-content">
+            <div class="card">
+                <h2>Analytics</h2>
+                
+                <div class="stats-card">
+                    <div class="stat-box">
+                        <h3>Total Requests</h3>
+                        <p id="totalRequests">0</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Success Rate</h3>
+                        <p id="successRate">0%</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Avg Response Time</h3>
+                        <p id="avgResponseTime">0 ms</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Requests Today</h3>
+                        <p id="requestsToday">0</p>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="responseTimes"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="statusCodes"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div id="exportTab" class="tab-content">
+            <div class="card">
+                <h2>Export Data</h2>
+                <p>Export your collected data in various formats for analysis or backup.</p>
+                
+                <div class="form-group">
+                    <label for="exportFormat">Export Format</label>
+                    <select id="exportFormat">
+                        <option value="json">JSON</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dateRange">Date Range</label>
+                    <select id="dateRange">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </div>
+                
+                <div id="exportButtons">
+                    <button id="exportDataBtn">Export Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Request Details</h2>
+            <div id="requestDetails"></div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the dashboard
+            const requestForm = document.getElementById('requestForm');
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            const clearRequestBtn = document.getElementById('clearRequestBtn');
+            const saveRequestBtn = document.getElementById('saveRequestBtn');
+            const loading = document.getElementById('loading');
+            const responseCard = document.getElementById('responseCard');
+            const requestsTableBody = document.getElementById('requestsTableBody');
+            const modal = document.getElementById('detailsModal');
+            const closeModal = document.querySelector('.close');
+            const requestDetails = document.getElementById('requestDetails');
+            const exportDataBtn = document.getElementById('exportDataBtn');
+            
+            // Initialize charts
+            let responseTimeChart;
+            let statusCodeChart;
+            
+            // Local storage keys
+            const STORAGE_KEY = 'httpMonitoringData';
+            
+            // Load saved data
+            let requestsData = loadData();
+            
+            // Initialize stats
+            updateStats();
+            
+            // Initialize tabs
+            initTabs();
+            
+            // Initialize sub-tabs
+            initSubTabs();
+            
+            // Initialize response tabs
+            initResponseTabs();
+            
+            // Initialize tables
+            updateRequestsTable();
+            
+            // Initialize body type changes
+            document.getElementById('bodyType').addEventListener('change', handleBodyTypeChange);
+            
+            // Initialize auth type changes
+            document.getElementById('authType').addEventListener('change', handleAuthTypeChange);
+            
+            // Add header button
+            document.getElementById('addHeaderBtn').addEventListener('click', function() {
+                addHeaderRow('headers');
+            });
+            
+            // Add param button
+            document.getElementById('addParamBtn').addEventListener('click', function() {
+                addHeaderRow('params');
+            });
+            
+            // Add form field button
+            document.getElementById('addFormFieldBtn').addEventListener('click', function() {
+                addHeaderRow('form');
+            });
+            
+            // Remove header/param/form buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-header-btn')) {
+                    e.target.parentElement.remove();
+                }
+                if (e.target.classList.contains('remove-param-btn')) {
+                    e.target.parentElement.remove();
+                }
+                if (e.target.classList.contains('remove-form-btn')) {
+                    e.target.parentElement.remove();
+                }
+            });
+            
+            // Submit form
+            requestForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                sendRequest();
+            });
+            
+            // Clear all data
+            clearAllBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear all request data? This cannot be undone.')) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    requestsData = [];
+                    updateRequestsTable();
+                    updateStats();
+                    alert('All data has been cleared.');
+                }
+            });
+            
+            // Clear request form
+            clearRequestBtn.addEventListener('click', function() {
+                requestForm.reset();
+                document.getElementById('headersContainer').innerHTML = '';
+                document.getElementById('paramsContainer').innerHTML = '';
+                document.getElementById('formDataContainer').innerHTML = '';
+                addHeaderRow('headers');
+                addHeaderRow('params');
+                addHeaderRow('form');
+                document.getElementById('jsonBody').value = '';
+                document.getElementById('textBody').value = '';
+                handleBodyTypeChange();
+                handleAuthTypeChange();
+            });
+            
+            // Save request button
+            saveRequestBtn.addEventListener('click', function() {
+                const requestName = document.getElementById('requestName').value || 'Unnamed Request';
+                const method = document.getElementById('method').value;
+                const url = document.getElementById('url').value;
+                
+                if (!url) {
+                    alert('Please enter a URL');
+                    return;
+                }
+                
+                const headers = getHeaders();
+                const params = getParams();
+                const bodyType = document.getElementById('bodyType').value;
+                let body = null;
+                
+                switch(bodyType) {
+                    case 'json':
+                        try {
+                            const jsonText = document.getElementById('jsonBody').value;
+                            body = jsonText ? JSON.parse(jsonText) : null;
+                        } catch (e) {
+                            alert('Invalid JSON body');
+                            return;
+                        }
+                        break;
+                    case 'form':
+                        body = getFormData();
+                        break;
+                    case 'text':
+                        body = document.getElementById('textBody').value;
+                        break;
+                }
+                
+                const authType = document.getElementById('authType').value;
+                let auth = null;
+                
+                switch(authType) {
+                    case 'basic':
+                        auth = {
+                            type: 'basic',
+                            username: document.getElementById('username').value,
+                            password: document.getElementById('password').value
+                        };
+                        break;
+                    case 'bearer':
+                        auth = {
+                            type: 'bearer',
+                            token: document.getElementById('token').value
+                        };
+                        break;
+                }
+                
+                const savedRequest = {
+                    name: requestName,
+                    method,
+                    url,
+                    headers,
+                    params,
+                    bodyType,
+                    body,
+                    authType,
+                    auth
+                };
+                
+                // Get existing saved requests
+                let savedRequests = JSON.parse(localStorage.getItem('savedRequests') || '[]');
+                savedRequests.push(savedRequest);
+                localStorage.setItem('savedRequests', JSON.stringify(savedRequests));
+                
+                alert('Request saved successfully');
+            });
+            
+            // Export data button
+            exportDataBtn.addEventListener('click', function() {
+                const format = document.getElementById('exportFormat').value;
+                const dateRange = document.getElementById('dateRange').value;
+                
+                // Filter data based on date range
+                let filteredData = requestsData;
+                const now = new Date();
+                
+                if (dateRange === 'today') {
+                    filteredData = requestsData.filter(item => {
+                        const date = new Date(item.timestamp);
+                        return date.toDateString() === now.toDateString();
+                    });
+                } else if (dateRange === 'week') {
+                    const weekStart = new Date(now);
+                    weekStart.setDate(now.getDate() - now.getDay());
+                    weekStart.setHours(0, 0, 0, 0);
+                    
+                    filteredData = requestsData.filter(item => {
+                        const date = new Date(item.timestamp);
+                        return date >= weekStart;
+                    });
+                } else if (dateRange === 'month') {
+                    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+                    
+                    filteredData = requestsData.filter(item => {
+                        const date = new Date(item.timestamp);
+                        return date >= monthStart;
+                    });
+                }
+                
+                // Export based on format
+                if (format === 'json') {
+                    exportJSON(filteredData);
+                } else if (format === 'csv') {
+                    exportCSV(filteredData);
+                }
+            });
+            
+            // Close modal
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Add click event to table for view details
+            requestsTableBody.addEventListener('click', function(e) {
+                if (e.target.classList.contains('view-details-btn')) {
+                    const index = e.target.getAttribute('data-index');
+                    showRequestDetails(requestsData[index]);
+                }
+            });
+            
+            // Function to initialize tabs
+            function initTabs() {
+                const tabs = document.querySelectorAll('.tabs .tab');
+                
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        // Handle main tabs
+                        if (this.hasAttribute('data-tab')) {
+                            const tabName = this.getAttribute('data-tab');
+                            
+                            // Remove active class from all tabs
+                            document.querySelectorAll('.tabs .tab').forEach(t => {
+                                if (t.hasAttribute('data-tab')) {
+                                    t.classList.remove('active');
+                                }
+                            });
+                            
+                            // Add active class to clicked tab
+                            this.classList.add('active');
+                            
+                            // Hide all tab content
+                            document.querySelectorAll('.tab-content').forEach(content => {
+                                if (content.id === 'responseBodyTab' || content.id === 'responseHeadersTab') {
+                                    // Skip response tabs
+                                    return;
+                                }
+                                content.classList.remove('active');
+                            });
+                            
+                            // Show selected tab content
+                            document.getElementById(tabName + 'Tab').classList.add('active');
+                            
+                            // Initialize charts if analytics tab is selected
+                            if (tabName === 'analytics') {
+                                initCharts();
+                            }
+                        }
+                    });
+                });
+            }
+            
+            // Function to initialize sub-tabs
+            function initSubTabs() {
+                const subTabs = document.querySelectorAll('.tab[data-subtab]');
+                
+                subTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const tabName = this.getAttribute('data-subtab');
+                        
+                        // Remove active class from all sub-tabs
+                        document.querySelectorAll('.tab[data-subtab]').forEach(t => {
+                            t.classList.remove('active');
+                        });
+                        
+                        // Add active class to clicked tab
+                        this.classList.add('active');
+                        
+                        // Hide all tab content
+                        document.querySelectorAll('#headersTab, #paramsTab, #bodyTab, #authTab').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        
+                        // Show selected tab content
+                        document.getElementById(tabName + 'Tab').classList.add('active');
+                    });
+                });
+            }
+            
+            // Function to initialize response tabs
+            function initResponseTabs() {
+                const resTabs = document.querySelectorAll('.tab[data-restab]');
+                
+                resTabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const tabName = this.getAttribute('data-restab');
+                        
+                        // Remove active class from all response tabs
+                        document.querySelectorAll('.tab[data-restab]').forEach(t => {
+                            t.classList.remove('active');
+                        });
+                        
+                        // Add active class to clicked tab
+                        this.classList.add('active');
+                        
+                        // Hide all tab content
+                        document.querySelectorAll('#responseBodyTab, #responseHeadersTab').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        
+                        // Show selected tab content
+                        document.getElementById('response' + tabName.charAt(0).toUpperCase() + tabName.slice(1) + 'Tab').classList.add('active');
+                    });
+                });
+            }
+            
+            // Function to handle body type changes
+            function handleBodyTypeChange() {
+                const bodyType = document.getElementById('bodyType').value;
+                
+                // Hide all body containers
+                document.getElementById('jsonBodyContainer').style.display = 'none';
+                document.getElementById('formBodyContainer').style.display = 'none';
+                document.getElementById('textBodyContainer').style.display = 'none';
+                
+                // Show selected body container
+                if (bodyType === 'json') {
+                    document.getElementById('jsonBodyContainer').style.display = 'block';
+                } else if (bodyType === 'form') {
+                    document.getElementById('formBodyContainer').style.display = 'block';
+                }
+                else if (bodyType === 'text') {
+                    document.getElementById('textBodyContainer').style.display = 'block';
+                }
+            }
+            // Function to handle auth type changes
+            function handleAuthTypeChange() {
+                const authType = document.getElementById('authType').value;
+                
+                // Hide all auth containers
+                document.getElementById('basicAuthContainer').style.display = 'none';
+                document.getElementById('bearerAuthContainer').style.display = 'none';
+                
+                // Show selected auth container
+                if (authType === 'basic') {
+                    document.getElementById('basicAuthContainer').style.display = 'block';
+                } else if (authType === 'bearer') {
+                    document.getElementById('bearerAuthContainer').style.display = 'block';
+                }
+            }
+            // Function to add header/param/form rows
+            function addHeaderRow(type) {
+                const containerId = type === 'headers' ? 'headersContainer' : type === 'params' ? 'paramsContainer' : 'formDataContainer';
+                const container = document.getElementById(containerId);
+                
+                const row = document.createElement('div');
+                row.classList.add('header-row');
+                
+                const keyInput = document.createElement('input');
+                keyInput.type = 'text';
+                keyInput.classList.add(type + '-key');
+                keyInput.placeholder = type.charAt(0).toUpperCase() + type.slice(1) + ' Name';
+                
+                const valueInput = document.createElement('input');
+                valueInput.type = 'text';
+                valueInput.classList.add(type + '-value');
+                valueInput.placeholder = type.charAt(0).toUpperCase() + type.slice(1) + ' Value';
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.classList.add('remove-' + type + '-btn');
+                removeBtn.textContent = '-';
+                
+                row.appendChild(keyInput);
+                row.appendChild(valueInput);
+                row.appendChild(removeBtn);
+                
+                container.appendChild(row);
+            }
+            // Function to get headers
+            function getHeaders() {
+                const headers = {};
+                const headerRows = document.querySelectorAll('.header-row');
+                
+                headerRows.forEach(row => {
+                    const key = row.querySelector('.header-key').value;
+                    const value = row.querySelector('.header-value').value;
+                    
+                    if (key && value) {
+                        headers[key] = value;
+                    }
+                });
+                
+                return headers;
+            }
+            // Function to get params
+            function getParams() {
+                const params = {};
+                const paramRows = document.querySelectorAll('.header-row');
+                
+                paramRows.forEach(row => {
+                    const key = row.querySelector('.param-key').value;
+                    const value = row.querySelector('.param-value').value;
+                    
+                    if (key && value) {
+                        params[key] = value;
+                    }
+                });
+                
+                return params;
+            }
+            // Function to get form data
+            function getFormData() {
+                const formData = {};
+                const formRows = document.querySelectorAll('.header-row');
+                
+                formRows.forEach(row => {
+                    const key = row.querySelector('.form-key').value;
+                    const value = row.querySelector('.form-value').value;
+                    
+                    if (key && value) {
+                        formData[key] = value;
+                    }
+                });
+                
+                return formData;
+            }
+            // Function to send request
