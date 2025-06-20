@@ -1884,5 +1884,798 @@
     "status": 404,
     "responseTime": 2,
     "responseSize": 150
+  },
+  {
+    "timestamp": "2025-06-11T11:10:02.582Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "user-agent": "curl/8.13.0",
+      "accept": "*/*"
+    },
+    "body": null,
+    "userAgent": "curl/8.13.0",
+    "status": 200,
+    "responseTime": 16,
+    "responseSize": 12220
+  },
+  {
+    "timestamp": "2025-06-11T11:10:02.602Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/api/stats",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "user-agent": "curl/8.13.0",
+      "accept": "*/*"
+    },
+    "body": null,
+    "userAgent": "curl/8.13.0",
+    "status": 200,
+    "responseTime": 7,
+    "responseSize": "382"
+  },
+  {
+    "timestamp": "2025-06-11T11:10:02.624Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/nonexistent",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 5,
+    "responseSize": 150
+  },
+  {
+    "timestamp": "2025-06-11T11:10:14.954Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "user-agent": "curl/8.13.0",
+      "accept": "*/*"
+    },
+    "body": null,
+    "userAgent": "curl/8.13.0",
+    "status": 200,
+    "responseTime": 3,
+    "responseSize": 12220
+  },
+  {
+    "timestamp": "2025-06-11T11:10:14.976Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/api/stats",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "user-agent": "curl/8.13.0",
+      "accept": "*/*"
+    },
+    "body": null,
+    "userAgent": "curl/8.13.0",
+    "status": 200,
+    "responseTime": 3,
+    "responseSize": "381"
+  },
+  {
+    "timestamp": "2025-06-11T11:10:14.998Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/nonexistent",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 2,
+    "responseSize": 150
+  },
+  {
+    "timestamp": "2025-06-11T11:10:59.749Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/?id=1%27%20OR%20%271%27=%271",
+    "query": {
+      "id": "1' OR '1'='1"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "sqlmap/1.7"
+    },
+    "body": null,
+    "userAgent": "sqlmap/1.7",
+    "status": 200,
+    "responseTime": 1,
+    "responseSize": 12220
+  },
+  {
+    "timestamp": "2025-06-11T11:10:59.760Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/search?q=%3Cscript%3Ealert(%27xss%27)%3C/script%3E",
+    "query": {
+      "q": "<script>alert('xss')</script>"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 145
+  },
+  {
+    "timestamp": "2025-06-11T11:10:59.771Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/etc/passwd",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0",
+      "x-forwarded-for": "1.2.3.4"
+    },
+    "body": null,
+    "userAgent": "Mozilla/5.0",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 149
+  },
+  {
+    "timestamp": "2025-06-11T11:10:59.780Z",
+    "ip": "::1",
+    "method": "TRACE",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "curl/7.81.0"
+    },
+    "body": null,
+    "userAgent": "curl/7.81.0",
+    "status": 404,
+    "responseTime": 0,
+    "responseSize": 141
+  },
+  {
+    "timestamp": "2025-06-11T11:11:19.192Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/?id=1%27%20OR%20%271%27=%271",
+    "query": {
+      "id": "1' OR '1'='1"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "sqlmap/1.7"
+    },
+    "body": null,
+    "userAgent": "sqlmap/1.7",
+    "status": 200,
+    "responseTime": 2,
+    "responseSize": 12220
+  },
+  {
+    "timestamp": "2025-06-11T11:11:19.204Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/search?q=%3Cscript%3Ealert(%27xss%27)%3C/script%3E",
+    "query": {
+      "q": "<script>alert('xss')</script>"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 145
+  },
+  {
+    "timestamp": "2025-06-11T11:11:19.217Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/etc/passwd",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0",
+      "x-forwarded-for": "1.2.3.4"
+    },
+    "body": null,
+    "userAgent": "Mozilla/5.0",
+    "status": 404,
+    "responseTime": 2,
+    "responseSize": 149
+  },
+  {
+    "timestamp": "2025-06-11T11:11:19.227Z",
+    "ip": "::1",
+    "method": "TRACE",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "curl/7.81.0"
+    },
+    "body": null,
+    "userAgent": "curl/7.81.0",
+    "status": 404,
+    "responseTime": 0,
+    "responseSize": 141
+  },
+  {
+    "timestamp": "2025-06-11T11:11:22.272Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/?id=1%27%20OR%20%271%27=%271",
+    "query": {
+      "id": "1' OR '1'='1"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "sqlmap/1.7"
+    },
+    "body": null,
+    "userAgent": "sqlmap/1.7",
+    "status": 200,
+    "responseTime": 1,
+    "responseSize": 12220
+  },
+  {
+    "timestamp": "2025-06-11T11:11:22.283Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/search?q=%3Cscript%3Ealert(%27xss%27)%3C/script%3E",
+    "query": {
+      "q": "<script>alert('xss')</script>"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 145
+  },
+  {
+    "timestamp": "2025-06-11T11:11:22.293Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/etc/passwd",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0",
+      "x-forwarded-for": "1.2.3.4"
+    },
+    "body": null,
+    "userAgent": "Mozilla/5.0",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 149
+  },
+  {
+    "timestamp": "2025-06-11T11:11:22.303Z",
+    "ip": "::1",
+    "method": "TRACE",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "curl/7.81.0"
+    },
+    "body": null,
+    "userAgent": "curl/7.81.0",
+    "status": 404,
+    "responseTime": 0,
+    "responseSize": 141
+  },
+  {
+    "timestamp": "2025-06-18T03:40:14.646Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/?id=1%27%20OR%20%271%27=%271",
+    "query": {
+      "id": "1' OR '1'='1"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "sqlmap/1.7"
+    },
+    "body": null,
+    "userAgent": "sqlmap/1.7",
+    "status": 200,
+    "responseTime": 12,
+    "responseSize": 12220
+  },
+  {
+    "timestamp": "2025-06-18T03:40:14.655Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/search?q=%3Cscript%3Ealert(%27xss%27)%3C/script%3E",
+    "query": {
+      "q": "<script>alert('xss')</script>"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 3,
+    "responseSize": 145
+  },
+  {
+    "timestamp": "2025-06-18T03:40:14.663Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/etc/passwd",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0",
+      "x-forwarded-for": "1.2.3.4"
+    },
+    "body": null,
+    "userAgent": "Mozilla/5.0",
+    "status": 404,
+    "responseTime": 2,
+    "responseSize": 149
+  },
+  {
+    "timestamp": "2025-06-18T03:40:14.673Z",
+    "ip": "::1",
+    "method": "TRACE",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "curl/7.81.0"
+    },
+    "body": null,
+    "userAgent": "curl/7.81.0",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 141
+  },
+  {
+    "timestamp": "2025-06-18T03:40:27.763Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/?id=1%27%20OR%20%271%27=%271",
+    "query": {
+      "id": "1' OR '1'='1"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "sqlmap/1.7"
+    },
+    "body": null,
+    "userAgent": "sqlmap/1.7",
+    "status": 200,
+    "responseTime": 1,
+    "responseSize": 12220
+  },
+  {
+    "timestamp": "2025-06-18T03:40:27.773Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/search?q=%3Cscript%3Ealert(%27xss%27)%3C/script%3E",
+    "query": {
+      "q": "<script>alert('xss')</script>"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 145
+  },
+  {
+    "timestamp": "2025-06-18T03:40:27.783Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/etc/passwd",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0",
+      "x-forwarded-for": "1.2.3.4"
+    },
+    "body": null,
+    "userAgent": "Mozilla/5.0",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 149
+  },
+  {
+    "timestamp": "2025-06-18T03:40:27.792Z",
+    "ip": "::1",
+    "method": "TRACE",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "curl/7.81.0"
+    },
+    "body": null,
+    "userAgent": "curl/7.81.0",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 141
+  },
+  {
+    "timestamp": "2025-06-18T04:35:41.546Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/?id=1%27%20OR%20%271%27=%271",
+    "query": {
+      "id": "1' OR '1'='1"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "sqlmap/1.7"
+    },
+    "body": null,
+    "userAgent": "sqlmap/1.7",
+    "status": 200,
+    "responseTime": 46,
+    "responseSize": 12220
+  },
+  {
+    "timestamp": "2025-06-18T04:35:41.566Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/search?q=%3Cscript%3Ealert(%27xss%27)%3C/script%3E",
+    "query": {
+      "q": "<script>alert('xss')</script>"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 10,
+    "responseSize": 145
+  },
+  {
+    "timestamp": "2025-06-18T04:35:41.575Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/etc/passwd",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0",
+      "x-forwarded-for": "1.2.3.4"
+    },
+    "body": null,
+    "userAgent": "Mozilla/5.0",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 149
+  },
+  {
+    "timestamp": "2025-06-18T04:35:41.584Z",
+    "ip": "::1",
+    "method": "TRACE",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "curl/7.81.0"
+    },
+    "body": null,
+    "userAgent": "curl/7.81.0",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 141
+  },
+  {
+    "timestamp": "2025-06-18T04:36:22.310Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/api/stats",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "user-agent": "curl/8.13.0",
+      "accept": "*/*"
+    },
+    "body": null,
+    "userAgent": "curl/8.13.0",
+    "status": 200,
+    "responseTime": 17,
+    "responseSize": "391"
+  },
+  {
+    "timestamp": "2025-06-18T04:36:39.556Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/api/stats",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "user-agent": "curl/8.13.0",
+      "accept": "*/*"
+    },
+    "body": null,
+    "userAgent": "curl/8.13.0",
+    "status": 200,
+    "responseTime": 1,
+    "responseSize": "401"
+  },
+  {
+    "timestamp": "2025-06-18T08:38:35.716Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/?id=1%27%20OR%20%271%27=%271",
+    "query": {
+      "id": "1' OR '1'='1"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "sqlmap/1.7"
+    },
+    "body": null,
+    "userAgent": "sqlmap/1.7",
+    "status": 200,
+    "responseTime": 11,
+    "responseSize": 12220
+  },
+  {
+    "timestamp": "2025-06-18T08:38:35.726Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/search?q=%3Cscript%3Ealert(%27xss%27)%3C/script%3E",
+    "query": {
+      "q": "<script>alert('xss')</script>"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 4,
+    "responseSize": 145
+  },
+  {
+    "timestamp": "2025-06-18T08:38:35.735Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/etc/passwd",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0",
+      "x-forwarded-for": "1.2.3.4"
+    },
+    "body": null,
+    "userAgent": "Mozilla/5.0",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 149
+  },
+  {
+    "timestamp": "2025-06-18T08:38:35.745Z",
+    "ip": "::1",
+    "method": "TRACE",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "curl/7.81.0"
+    },
+    "body": null,
+    "userAgent": "curl/7.81.0",
+    "status": 404,
+    "responseTime": 1,
+    "responseSize": 141
+  },
+  {
+    "timestamp": "2025-06-20T06:19:54.357Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/?id=1%27%20OR%20%271%27=%271",
+    "query": {
+      "id": "1' OR '1'='1"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "sqlmap/1.7"
+    },
+    "body": null,
+    "userAgent": "sqlmap/1.7",
+    "status": 200,
+    "responseTime": 19,
+    "responseSize": 27436
+  },
+  {
+    "timestamp": "2025-06-20T06:19:54.377Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/search?q=%3Cscript%3Ealert(%27xss%27)%3C/script%3E",
+    "query": {
+      "q": "<script>alert('xss')</script>"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 5,
+    "responseSize": 145
+  },
+  {
+    "timestamp": "2025-06-20T06:19:54.395Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/etc/passwd",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0",
+      "x-forwarded-for": "1.2.3.4"
+    },
+    "body": null,
+    "userAgent": "Mozilla/5.0",
+    "status": 404,
+    "responseTime": 2,
+    "responseSize": 149
+  },
+  {
+    "timestamp": "2025-06-20T06:19:54.415Z",
+    "ip": "::1",
+    "method": "TRACE",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "curl/7.81.0"
+    },
+    "body": null,
+    "userAgent": "curl/7.81.0",
+    "status": 404,
+    "responseTime": 2,
+    "responseSize": 141
+  },
+  {
+    "timestamp": "2025-06-20T06:20:04.932Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/?id=1%27%20OR%20%271%27=%271",
+    "query": {
+      "id": "1' OR '1'='1"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "sqlmap/1.7"
+    },
+    "body": null,
+    "userAgent": "sqlmap/1.7",
+    "status": 200,
+    "responseTime": 3,
+    "responseSize": 27436
+  },
+  {
+    "timestamp": "2025-06-20T06:20:04.952Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/search?q=%3Cscript%3Ealert(%27xss%27)%3C/script%3E",
+    "query": {
+      "q": "<script>alert('xss')</script>"
+    },
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "MaliciousBot"
+    },
+    "body": null,
+    "userAgent": "MaliciousBot",
+    "status": 404,
+    "responseTime": 2,
+    "responseSize": 145
+  },
+  {
+    "timestamp": "2025-06-20T06:20:04.976Z",
+    "ip": "::1",
+    "method": "GET",
+    "url": "/etc/passwd",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "Mozilla/5.0",
+      "x-forwarded-for": "1.2.3.4"
+    },
+    "body": null,
+    "userAgent": "Mozilla/5.0",
+    "status": 404,
+    "responseTime": 3,
+    "responseSize": 149
+  },
+  {
+    "timestamp": "2025-06-20T06:20:05.000Z",
+    "ip": "::1",
+    "method": "TRACE",
+    "url": "/",
+    "query": {},
+    "headers": {
+      "host": "localhost:3000",
+      "accept": "*/*",
+      "user-agent": "curl/7.81.0"
+    },
+    "body": null,
+    "userAgent": "curl/7.81.0",
+    "status": 404,
+    "responseTime": 2,
+    "responseSize": 141
   }
 ]

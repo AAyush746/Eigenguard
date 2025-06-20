@@ -101,6 +101,31 @@
             padding-bottom: 15px;
         }
 
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.disconnected {
+            background-color: var(--accent-red);
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -130,6 +155,10 @@
         .stat-card .label {
             color: #7f8c8d;
             margin-top: 10px;
+        }
+
+        .loading {
+            opacity: 0.6;
         }
 
         .threat-section {
@@ -186,6 +215,7 @@
             background-color: rgba(231, 76, 60, 0.2);
             color: var(--accent-red);
         }
+
         .ai-insights {
             background-color: var(--card-bg);
             border-radius: 10px;
@@ -243,49 +273,137 @@
             background-color: var(--accent-green);
             transition: width 0.5s ease;
         }
+
+        .manual-scan {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px var(--shadow);
+            margin-top: 20px;
+        }
+
+        .scan-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #2980b9;
+        }
+
+        .btn-primary:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .scan-progress {
+            width: 100%;
+            height: 20px;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .scan-progress-bar {
+            height: 100%;
+            background-color: var(--accent-blue);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--accent-red);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 4px solid var(--accent-red);
+        }
     </style>
 </head>
 <body>
     <div class="dashboard">
         <aside class="sidebar">
             <div class="sidebar-logo">
-                <img src="log2.png" style="width: 100%; height: auto;" alt="EigenGuard Logo">
-               
+                <img src="log2.png" style="width: 230px;">
             </div>
             <ul class="sidebar-menu">
-                <li><a href="index.html">Dashboard</a></li>
-                <li><a href="network-traffic.html">Network Traffic</a></li>
-                <li><a href="threatdetection.html">Threat Detection</a></li>
-                <li><a href="analytics.html">Analytics</a></li>
-                <li><a href="configurations.html">Configuration</a></li>
-                <li><a href="monitoring-dashboard.html">monitoring dashboard</a></li>
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="network-traffic.html" onclick="navigateToPage('network-traffic')">Network Traffic</a></li>
+                <li><a href="threatdetection.html" onclick="navigateToPage('threat-detection')">Threat Detection</a></li>
+                <li><a href="analytics.html" onclick="navigateToPage('analytics')">Analytics</a></li>
+                <li><a href="configurations.html" onclick="navigateToPage('configuration')">Configuration</a></li>
             </ul>
         </aside>
         
         <main class="main-content">
             <header class="header">
                 <h1>AI-Powered Intrusion Detection</h1>
-                <div>Last Updated: <span id="last-update">March 28, 2025 14:35:22</span></div>
+                <div class="connection-status">
+                    <div class="status-indicator" id="connection-indicator"></div>
+                    <span id="connection-status">Connected to Backend</span>
+                    <div>Last Updated: <span id="last-update">Loading...</span></div>
+                </div>
             </header>
             
             <section class="stats-grid">
-                <div class="stat-card">
-                    <div class="value">42</div>
+                <div class="stat-card" id="anomalies-card">
+                    <div class="value" id="total-anomalies">Loading...</div>
                     <div class="label">Total Anomalies</div>
                 </div>
-                <div class="stat-card">
-                    <div class="value">3</div>
+                <div class="stat-card" id="threats-card">
+                    <div class="value" id="critical-threats">Loading...</div>
                     <div class="label">Critical Threats</div>
                 </div>
-                <div class="stat-card">
-                    <div class="value">99.7%</div>
+                <div class="stat-card" id="security-card">
+                    <div class="value" id="security-score">Loading...</div>
                     <div class="label">Network Security Score</div>
                 </div>
-                <div class="stat-card">
-                    <div class="value">247</div>
+                <div class="stat-card" id="events-card">
+                    <div class="value" id="events-processed">Loading...</div>
                     <div class="label">Events Processed</div>
                 </div>
             </section>
+
+            <section class="manual-scan">
+                <h2>Manual Anomaly Detection</h2>
+                <div class="scan-controls">
+                    <button class="btn btn-primary" id="start-scan-btn" onclick="startAnomalyDetection()">
+                        Start Scan
+                    </button>
+                    <button class="btn btn-primary" id="stop-scan-btn" onclick="stopAnomalyDetection()" disabled>
+                        Stop Scan
+                    </button>
+                    <select id="scan-type">
+                        <option value="full">Full Network Scan</option>
+                        <option value="targeted">Targeted Analysis</option>
+                        <option value="realtime">Real-time Monitoring</option>
+                    </select>
+                </div>
+                <div class="scan-progress" id="scan-progress-container" style="display: none;">
+                    <div class="scan-progress-bar" id="scan-progress-bar"></div>
+                </div>
+                <div id="scan-status"></div>
+                <div id="error-container"></div>
+            </section>
+
             <section class="ai-insights">
                 <h2>AI Threat Intelligence</h2>
                 <div class="ai-prediction-grid">
@@ -294,30 +412,31 @@
                         <h3>Predictive Threat Analysis</h3>
                         <p>Proactive risk identification</p>
                         <div class="ai-confidence-meter">
-                            <div class="ai-confidence-level" style="width: 85%"></div>
+                            <div class="ai-confidence-level" id="prediction-confidence" style="width: 85%"></div>
                         </div>
-                        <small>85% Confidence</small>
+                        <small id="prediction-percentage">85% Confidence</small>
                     </div>
                     <div class="ai-prediction-card">
                         <div class="ai-icon">🔮</div>
                         <h3>Anomaly Detection</h3>
                         <p>Machine learning pattern recognition</p>
                         <div class="ai-confidence-meter">
-                            <div class="ai-confidence-level" style="width: 92%"></div>
+                            <div class="ai-confidence-level" id="anomaly-accuracy" style="width: 92%"></div>
                         </div>
-                        <small>92% Accuracy</small>
+                        <small id="anomaly-percentage">92% Accuracy</small>
                     </div>
                     <div class="ai-prediction-card">
                         <div class="ai-icon">🛡️</div>
                         <h3>Adaptive Defense</h3>
                         <p>Real-time threat mitigation</p>
                         <div class="ai-confidence-meter">
-                            <div class="ai-confidence-level" style="width: 78%"></div>
+                            <div class="ai-confidence-level" id="defense-adaptive" style="width: 78%"></div>
                         </div>
-                        <small>78% Adaptive Response</small>
+                        <small id="defense-percentage">78% Adaptive Response</small>
                     </div>
                 </div>
             </section>
+
             <section class="threat-section">
                 <div class="threat-table">
                     <h2>Recent Threats</h2>
@@ -328,26 +447,12 @@
                                 <th>Source IP</th>
                                 <th>Threat Level</th>
                                 <th>Description</th>
+                                <th>Anomaly Score</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="threats-table-body">
                             <tr>
-                                <td>2025-03-28 14:23</td>
-                                <td>192.168.1.105</td>
-                                <td><span class="threat-level threat-level-high">High</span></td>
-                                <td>Unusual SSH Access Pattern</td>
-                            </tr>
-                            <tr>
-                                <td>2025-03-28 13:55</td>
-                                <td>10.0.0.42</td>
-                                <td><span class="threat-level threat-level-medium">Medium</span></td>
-                                <td>Multiple Login Attempts</td>
-                            </tr>
-                            <tr>
-                                <td>2025-03-28 12:40</td>
-                                <td>172.16.0.88</td>
-                                <td><span class="threat-level threat-level-low">Low</span></td>
-                                <td>Potential Port Scan</td>
+                                <td colspan="5" style="text-align: center;">Loading threats...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -355,7 +460,7 @@
                 <div class="threat-chart">
                     <h2>Threat Analytics</h2>
                     <div id="threat-chart" style="height: 300px; display: flex; justify-content: center; align-items: center;">
-                        Threat Chart Placeholder
+                        <canvas id="threatChart" width="300" height="200"></canvas>
                     </div>
                 </div>
             </section>
@@ -363,6 +468,26 @@
     </div>
 
     <script>
+        // Configuration - Update these URLs to match your backend
+        const API_BASE_URL = 'http://localhost:5000/api';  // Change this to your backend URL
+        
+        // State management
+        let isScanning = false;
+        let scanInterval = null;
+        let dataUpdateInterval = null;
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDashboard();
+        });
+
+        function initializeDashboard() {
+            updateLastUpdateTime();
+            fetchDashboardData();
+            startDataUpdates();
+            setInterval(updateLastUpdateTime, 60000);
+        }
+
         function updateLastUpdateTime() {
             const lastUpdateEl = document.getElementById('last-update');
             const now = new Date();
@@ -377,9 +502,285 @@
             });
         }
 
-        // Update time every minute
-        setInterval(updateLastUpdateTime, 60000);
-        updateLastUpdateTime();
+        // API Communication Functions
+        async function makeAPIRequest(endpoint, options = {}) {
+            try {
+                const url = `${API_BASE_URL}${endpoint}`;
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('API request failed:', error);
+                updateConnectionStatus(false);
+                throw error;
+            }
+        }
+
+        function updateConnectionStatus(isConnected) {
+            const indicator = document.getElementById('connection-indicator');
+            const status = document.getElementById('connection-status');
+            
+            if (isConnected) {
+                indicator.classList.remove('disconnected');
+                status.textContent = 'Connected to Backend';
+            } else {
+                indicator.classList.add('disconnected');
+                status.textContent = 'Backend Connection Lost';
+            }
+        }
+
+        // Dashboard Data Functions
+        async function fetchDashboardData() {
+            try {
+                const data = await makeAPIRequest('/dashboard-stats');
+                updateDashboardStats(data);
+                updateConnectionStatus(true);
+            } catch (error) {
+                console.error('Failed to fetch dashboard data:', error);
+                setDefaultDashboardData();
+            }
+        }
+
+        function updateDashboardStats(data) {
+            // Update stats cards
+            document.getElementById('total-anomalies').textContent = data.total_anomalies || '0';
+            document.getElementById('critical-threats').textContent = data.critical_threats || '0';
+            document.getElementById('security-score').textContent = `${data.security_score || '0'}%`;
+            document.getElementById('events-processed').textContent = data.events_processed || '0';
+
+            // Update AI confidence meters
+            if (data.ai_metrics) {
+                updateAIMetrics(data.ai_metrics);
+            }
+
+            // Update recent threats table
+            if (data.recent_threats) {
+                updateThreatsTable(data.recent_threats);
+            }
+        }
+
+        function setDefaultDashboardData() {
+            document.getElementById('total-anomalies').textContent = '--';
+            document.getElementById('critical-threats').textContent = '--';
+            document.getElementById('security-score').textContent = '--';
+            document.getElementById('events-processed').textContent = '--';
+        }
+
+        function updateAIMetrics(metrics) {
+            const predictionConf = document.getElementById('prediction-confidence');
+            const predictionPerc = document.getElementById('prediction-percentage');
+            const anomalyAcc = document.getElementById('anomaly-accuracy');
+            const anomalyPerc = document.getElementById('anomaly-percentage');
+            const defenseAdap = document.getElementById('defense-adaptive');
+            const defensePerc = document.getElementById('defense-percentage');
+
+            predictionConf.style.width = `${metrics.prediction_confidence || 0}%`;
+            predictionPerc.textContent = `${metrics.prediction_confidence || 0}% Confidence`;
+            
+            anomalyAcc.style.width = `${metrics.anomaly_accuracy || 0}%`;
+            anomalyPerc.textContent = `${metrics.anomaly_accuracy || 0}% Accuracy`;
+            
+            defenseAdap.style.width = `${metrics.defense_adaptive || 0}%`;
+            defensePerc.textContent = `${metrics.defense_adaptive || 0}% Adaptive Response`;
+        }
+
+        function updateThreatsTable(threats) {
+            const tbody = document.getElementById('threats-table-body');
+            tbody.innerHTML = '';
+
+            if (!threats || threats.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No recent threats detected</td></tr>';
+                return;
+            }
+
+            threats.forEach(threat => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${threat.timestamp}</td>
+                    <td>${threat.source_ip}</td>
+                    <td><span class="threat-level threat-level-${threat.level.toLowerCase()}">${threat.level}</span></td>
+                    <td>${threat.description}</td>
+                    <td>${threat.anomaly_score || 'N/A'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Anomaly Detection Functions
+        async function startAnomalyDetection() {
+            const scanType = document.getElementById('scan-type').value;
+            const startBtn = document.getElementById('start-scan-btn');
+            const stopBtn = document.getElementById('stop-scan-btn');
+            const progressContainer = document.getElementById('scan-progress-container');
+            const statusDiv = document.getElementById('scan-status');
+
+            try {
+                isScanning = true;
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                progressContainer.style.display = 'block';
+                statusDiv.textContent = 'Initializing scan...';
+                clearError();
+
+                // Start the scan via API
+                const response = await makeAPIRequest('/start-anomaly-scan', {
+                    method: 'POST',
+                    body: JSON.stringify({ scan_type: scanType })
+                });
+
+                if (response.success) {
+                    statusDiv.textContent = `${scanType} scan started successfully`;
+                    startScanProgress();
+                } else {
+                    throw new Error(response.message || 'Failed to start scan');
+                }
+
+            } catch (error) {
+                showError(`Failed to start anomaly detection: ${error.message}`);
+                resetScanState();
+            }
+        }
+
+        async function stopAnomalyDetection() {
+            try {
+                const response = await makeAPIRequest('/stop-anomaly-scan', {
+                    method: 'POST'
+                });
+
+                if (response.success) {
+                    document.getElementById('scan-status').textContent = 'Scan stopped by user';
+                } else {
+                    throw new Error(response.message || 'Failed to stop scan');
+                }
+            } catch (error) {
+                showError(`Failed to stop scan: ${error.message}`);
+            }
+
+            resetScanState();
+        }
+
+        function startScanProgress() {
+            let progress = 0;
+            const progressBar = document.getElementById('scan-progress-bar');
+            const statusDiv = document.getElementById('scan-status');
+
+            scanInterval = setInterval(async () => {
+                try {
+                    // Check scan status
+                    const status = await makeAPIRequest('/scan-status');
+                    
+                    if (status.completed) {
+                        progressBar.style.width = '100%';
+                        statusDiv.textContent = `Scan completed. Found ${status.anomalies_detected || 0} anomalies.`;
+                        resetScanState();
+                        fetchDashboardData(); // Refresh dashboard data
+                        return;
+                    }
+
+                    if (status.progress !== undefined) {
+                        progress = status.progress;
+                    } else {
+                        progress += Math.random() * 10; // Simulate progress if not provided
+                    }
+
+                    if (progress > 95) progress = 95; // Don't reach 100% until actually complete
+                    
+                    progressBar.style.width = `${progress}%`;
+                    statusDiv.textContent = status.message || `Scanning... ${Math.round(progress)}% complete`;
+
+                } catch (error) {
+                    console.error('Error checking scan status:', error);
+                    statusDiv.textContent = 'Scan in progress (status check failed)';
+                }
+            }, 2000);
+        }
+
+        function resetScanState() {
+            isScanning = false;
+            document.getElementById('start-scan-btn').disabled = false;
+            document.getElementById('stop-scan-btn').disabled = true;
+            document.getElementById('scan-progress-container').style.display = 'none';
+            document.getElementById('scan-progress-bar').style.width = '0%';
+            
+            if (scanInterval) {
+                clearInterval(scanInterval);
+                scanInterval = null;
+            }
+        }
+
+        function startDataUpdates() {
+            // Update dashboard data every 30 seconds
+            dataUpdateInterval = setInterval(() => {
+                if (!isScanning) { // Don't update during scanning to avoid conflicts
+                    fetchDashboardData();
+                }
+            }, 30000);
+        }
+
+        // Error handling
+        function showError(message) {
+            const errorContainer = document.getElementById('error-container');
+            errorContainer.innerHTML = `<div class="error-message">${message}</div>`;
+        }
+
+        function clearError() {
+            document.getElementById('error-container').innerHTML = '';
+        }
+
+        // Navigation function
+        function navigateToPage(page) {
+            // This would navigate to other pages in your application
+            console.log(`Navigate to ${page}`);
+            // You can implement actual navigation here
+        }
+
+        // Simple chart rendering using Canvas
+        function drawThreatChart() {
+            const canvas = document.getElementById('threatChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw simple bar chart
+            const data = [30, 45, 20, 60, 35]; // Sample data
+            const colors = ['#e74c3c', '#f39c12', '#f1c40f', '#2ecc71', '#3498db'];
+            const barWidth = width / data.length - 10;
+
+            data.forEach((value, index) => {
+                const barHeight = (value / 100) * height * 0.8;
+                const x = index * (barWidth + 10) + 5;
+                const y = height - barHeight - 20;
+
+                ctx.fillStyle = colors[index];
+                ctx.fillRect(x, y, barWidth, barHeight);
+                
+                // Add labels
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = '12px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText(value, x + barWidth/2, height - 5);
+            });
+        }
+
+        // Initialize chart when page loads
+        window.addEventListener('load', function() {
+            setTimeout(drawThreatChart, 1000);
+        });
     </script>
 </body>
 </html>
