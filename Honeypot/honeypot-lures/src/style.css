@@ -1,0 +1,149 @@
+/* * Legacy Enterprise Theme Styling 
+ * Designed to look like a simple, dated internal corporate application.
+ */
+
+body{
+    margin: 0;
+    font-family: Tahoma, Geneva, sans-serif; /* Classic Windows font */
+    background: #e9e9e9; /* Light grey background */
+    color: #333;
+}
+a{
+    color: #003087; /* Corporate blue link */
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
+.page{
+    max-width: 960px;
+    margin: 20px auto;
+    padding: 25px;
+    background: #fff; /* White content area */
+    min-height: 90vh;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    border-radius: 4px;
+}
+.small{
+    max-width: 480px;
+    margin-top: 50px;
+}
+
+/* Header Styling - Classic Corporate Color Block */
+.site-header{
+    background: #003087; /* Deep corporate blue */
+    color: #fff;
+    padding: 15px 25px;
+    margin: -25px -25px 20px -25px;
+    border-bottom: 5px solid #ffcc00; /* Yellow highlight for dated/warning look */
+}
+.site-header h1{
+    margin: 0;
+    font-size: 24px;
+}
+.site-header nav a{
+    color: #fff;
+    margin-right: 15px;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+h2{
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
+    margin-top: 20px;
+    color: #003087;
+}
+h3{
+    color: #666;
+    margin-top: 30px;
+    font-size: 1.1em;
+}
+
+/* Form and Input Styling */
+form label{
+    display: block;
+    margin: 15px 0;
+    font-weight: bold;
+}
+input[type="text"], input[type="password"]{
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #999;
+    border-radius: 0; /* Square edges look older */
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #003087;
+    outline: none;
+}
+.form-options{
+    font-weight: normal; 
+    font-size: 13px; 
+    margin: -10px 0 20px 0;
+}
+.form-options input[type="checkbox"]{
+    width: auto;
+}
+button{
+    padding: 10px 20px;
+    background: #5cb85c; /* Green success button */
+    color: #fff;
+    border: 1px solid #3d8b3d;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+button:hover:not(:disabled){
+    background: #4cae4c;
+}
+button:disabled{
+    opacity: 0.6; 
+    cursor: not-allowed;
+}
+.meta-links{
+    font-size: 13px; 
+    text-align: right; 
+    border-top: 1px dotted #ccc; 
+    padding-top: 10px;
+    margin-top: 20px;
+}
+
+/* Pre-formatted Text and Logs (Lures) */
+pre{
+    background: #222;
+    color: #f00; /* Default red text for errors/raw logs */
+    padding: 15px;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace; /* Monospace font for file/log lists */
+    font-size: 12px;
+    border: 1px solid #444;
+    border-radius: 0;
+    white-space: pre-wrap; 
+}
+.raw-file{
+    color: #ffcc00; /* Yellow for exposed env vars (.env) */
+}
+.log-area{
+    color: #0f0; /* Green for fake admin logs (Command line look) */
+}
+.log-area {
+    /* Preserve whitespace exactly for the file list columns */
+    white-space: pre; 
+}
+
+/* Footer */
+footer{
+    text-align: center;
+    padding: 15px;
+    color: #666;
+    font-size: 11px;
+    border-top: 1px dotted #ccc;
+    margin-top: 30px;
+}
