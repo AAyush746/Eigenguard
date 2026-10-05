@@ -54,7 +54,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
 
       # The logger has no dependencies by design, so there is nothing to install
       # and no lockfile to trust.
@@ -70,7 +70,11 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          # Pinned to 24, not 20: jsdom's undici dependency calls
+          # webidl.util.markAsUncloneable, which does not exist before Node 22.
+          # On Node 20 jsdom fails to load and vitest reports "no tests" rather
+          # than an assertion failure.
+          node-version: "24"
           cache: npm
           cache-dependency-path: dashboard/package-lock.json
 
