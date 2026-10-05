@@ -1,0 +1,106 @@
+{
+  "dataset": {
+    "path": "data/http_dataset.csv",
+    "rows": 22360,
+    "features": 37,
+    "attack_rows": 17744,
+    "benign_rows": 4616,
+    "label_distribution": {
+      "benign": 4616,
+      "dirb": 4614,
+      "ffuf": 4614,
+      "nikto": 4555,
+      "nmap": 2491,
+      "sqlmap": 1470
+    }
+  },
+  "random_forest": {
+    "model": "RandomForest (held-out test set)",
+    "accuracy": 0.998211091234347,
+    "precision": 0.9991542148294333,
+    "recall": 0.9985911524373062,
+    "f1": 0.9988726042841037,
+    "confusion_matrix": [
+      [
+        920,
+        3
+      ],
+      [
+        5,
+        3544
+      ]
+    ],
+    "roc_auc": 0.9997310520687468,
+    "cv_accuracy_mean": 0.998479427549195,
+    "cv_accuracy_std": 0.00047750797191554366,
+    "cv_precision_mean": 0.9991545641902075,
+    "cv_precision_std": 0.0003562881145527004,
+    "cv_recall_mean": 0.9989292599690657,
+    "cv_recall_std": 0.0004847487502658665,
+    "cv_f1_mean": 0.9990418089210673,
+    "cv_f1_std": 0.0003009494623380247,
+    "cv_roc_auc_mean": 0.9999623326885143,
+    "cv_roc_auc_std": 4.378700848006201e-05
+  },
+  "leave_one_tool_out": [
+    {
+      "held_out_tool": "dirb",
+      "test_rows": 4614,
+      "recall": 0.7850021673168617,
+      "precision": 1.0,
+      "f1": 0.879553181155901
+    },
+    {
+      "held_out_tool": "ffuf",
+      "test_rows": 4614,
+      "recall": 0.25465973125270913,
+      "precision": 1.0,
+      "f1": 0.40594230437035755
+    },
+    {
+      "held_out_tool": "nikto",
+      "test_rows": 4555,
+      "recall": 0.06827661909989023,
+      "precision": 1.0,
+      "f1": 0.12782572955199342
+    },
+    {
+      "held_out_tool": "nmap",
+      "test_rows": 2491,
+      "recall": 0.8867924528301887,
+      "precision": 1.0,
+      "f1": 0.94
+    },
+    {
+      "held_out_tool": "sqlmap",
+      "test_rows": 1470,
+      "recall": 0.0,
+      "precision": 0.0,
+      "f1": 0.0
+    },
+    {
+      "mean_recall": 0.39894619409993,
+      "worst_tool": "sqlmap"
+    }
+  ],
+  "isolation_forest": {
+    "model": "IsolationForest (fit on all features, no labels)",
+    "accuracy": 0.27432915921288015,
+    "precision": 0.8394454382826476,
+    "recall": 0.10578223624887285,
+    "f1": 0.18788788788788788,
+    "confusion_matrix": [
+      [
+        4257,
+        359
+      ],
+      [
+        15867,
+        1877
+      ]
+    ],
+    "flagged": 2236,
+    "total": 22360
+  },
+  "seed": 42
+}

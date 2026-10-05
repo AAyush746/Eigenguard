@@ -1,0 +1,157 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: Python (honeypot + ml)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install honeypot dependencies
+        run: pip install -r honeypot/requirements-dev.txt
+
+      - name: Install ML dependencies
+        run: pip install -r ml/requirements.txt pytest
+
+      # These tests start a real paramiko SSH server on an ephemeral port and
+      # connect to it with a real client, so nothing here is mocked at the
+      # socket boundary.
+      - name: Honeypot tests
+        run: python -m pytest honeypot/tests -q
+
+      - name: ML feature tests
+        run: python -m pytest ml/tests -q
+
+      - name: Byte-compile every Python file
+        run: python -m compileall -q honeypot/eigenguard ml scripts honeypot/tests ml/tests
+
+  node:
+    name: HTTP logger
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # The logger has no dependencies by design, so there is nothing to install
+      # and no lockfile to trust.
+      - name: Test
+        run: npm --prefix http_logger test
+
+  dashboard:
+    name: Dashboard
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: dashboard/package-lock.json
+
+      - name: Install
+        working-directory: dashboard
+        run: npm ci
+
+      - name: Lint
+        working-directory: dashboard
+        run: npm run lint
+
+      - name: Typecheck
+        working-directory: dashboard
+        run: npm run typecheck
+
+      - name: Test
+        working-directory: dashboard
+        run: npm test
+
+      - name: Build
+        working-directory: dashboard
+        run: npm run build
+
+  integration:
+    name: End-to-end honeypot
+    runs-on: ubuntu-latest
+    needs: python
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r honeypot/requirements-dev.txt
+
+      # Proves the documented start path works and that real SSH traffic lands
+      # in the database and comes back out of the API.
+      - name: Start the honeypot
+        run: bash honeypot/start.sh
+
+      - name: Wait for both listeners
+        run: |
+          for _ in $(seq 1 30); do
+            if curl -sf http://localhost:8000/health >/dev/null; then break; fi
+            sleep 1
+          done
+          curl -sf http://localhost:8000/health
+
+      - name: Drive real SSH traffic at the honeypot
+        run: python scripts/simulate_ssh_attacks.py --port 2222 --rounds 1 --seed 1
+
+      - name: Assert the captures are readable through the API
+        run: |
+          python - <<'PY'
+          import json, urllib.request
+
+          stats = json.load(urllib.request.urlopen("http://localhost:8000/api/stats"))
+          assert stats["total_sessions"] > 0, "no sessions were captured"
+          assert stats["total_attempts"] > 0, "no credentials were captured"
+          assert stats["top_usernames"], "no usernames were ranked"
+
+          page = json.load(
+              urllib.request.urlopen(
+                  "http://localhost:8000/api/sessions?limit=5&include_attempts=true"
+              )
+          )
+          assert page["results"], "sessions endpoint returned nothing"
+          assert any(row["attempts"] for row in page["results"]), "no embedded attempts"
+
+          print(
+              f"captured {stats['total_sessions']} sessions / "
+              f"{stats['total_attempts']} credential attempts"
+          )
+          PY
+
+      # Must come after the assertions: stopping the API first would leave
+      # nothing for them to read.
+      - name: Stop the honeypot
+        if: always()
+        run: bash honeypot/stop.sh

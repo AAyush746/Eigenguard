@@ -1,0 +1,9 @@
+# Runtime dependencies for the EigenGuard honeypot and its API.
+# Lower bounds only: these are the oldest releases with the APIs the code uses
+# (SQLAlchemy 2.0 style, pydantic v2 in FastAPI, paramiko's Transport API).
+
+fastapi>=0.110
+uvicorn[standard]>=0.27
+SQLAlchemy>=2.0
+paramiko>=3.4
+geoip2>=4.7

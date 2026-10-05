@@ -1,8 +1,0 @@
-fastapi==0.115.0
-uvicorn==0.30.6
-sqlalchemy==2.0.35
-pygeoip==0.3.2
-geoip2==4.8.0
-python-multipart==0.0.9
-twisted==24.7.0
-pycryptodome==3.20.0

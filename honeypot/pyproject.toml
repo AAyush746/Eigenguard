@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eigenguard-honeypot"
+version = "1.0.0"
+description = "SSH honeypot that records the credentials attackers actually submit, with CIC-style flow features and a REST API"
+readme = "../README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "SQLAlchemy>=2.0",
+    "paramiko>=3.4",
+    "geoip2>=4.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "httpx>=0.27"]
+
+[project.scripts]
+eigenguard-ssh = "eigenguard.ssh_server:run"
+eigenguard-api = "eigenguard.__main__:main"
+
+[tool.setuptools]
+packages = ["eigenguard"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
